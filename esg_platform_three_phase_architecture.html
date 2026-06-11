@@ -1,0 +1,141 @@
+
+<h2 class="sr-only">ESG Sustainability Analytics Platform — three-phase architecture design</h2>
+<style>
+:root{--p3bg:#EEEDFE;--p3tx:#534AB7;--p3bd:#AFA9EC}
+@media(prefers-color-scheme:dark){:root{--p3bg:#26215C;--p3tx:#CCC9F5;--p3bd:#534AB7}}
+.tb{display:flex;gap:6px;margin:.5rem 0 14px}
+.t{flex:1;padding:10px 8px;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-md);background:transparent;font-size:12px;line-height:1.4;cursor:pointer;color:var(--color-text-secondary);font-family:var(--font-sans);text-align:center;transition:background .15s,border-color .15s}
+.t:hover{background:var(--color-background-secondary)}
+.t.p1.on{background:var(--color-background-success);border-color:var(--color-border-success);color:var(--color-text-success)}
+.t.p2.on{background:var(--color-background-info);border-color:var(--color-border-info);color:var(--color-text-info)}
+.t.p3.on{background:var(--p3bg);border-color:var(--p3bd);color:var(--p3tx)}
+.ph{display:flex;gap:14px;padding:10px 14px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:var(--color-background-secondary);margin-bottom:14px;align-items:flex-start}
+.ptg{font-size:11px;font-weight:500;color:var(--color-text-secondary);white-space:nowrap;margin-bottom:3px}
+.pnm{font-size:14px;font-weight:500;color:var(--color-text-primary)}
+.pg{font-size:13px;color:var(--color-text-secondary);flex:1;line-height:1.55}
+.lr{display:flex;align-items:stretch;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:var(--color-background-primary);margin-bottom:4px;overflow:hidden}
+.ln{font-size:11px;font-weight:500;color:var(--color-text-secondary);text-transform:uppercase;letter-spacing:.06em;padding:8px 10px;min-width:118px;max-width:118px;border-right:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;line-height:1.35}
+.lm{display:flex;flex-wrap:wrap;gap:5px;padding:8px 10px;flex:1;align-items:center}
+.m{font-size:12px;padding:4px 10px;border-radius:20px;border:0.5px solid var(--color-border-secondary);color:var(--color-text-secondary);background:var(--color-background-secondary)}
+.m.n2{background:var(--color-background-info);border-color:var(--color-border-info);color:var(--color-text-info)}
+.m.n3{background:var(--p3bg);border-color:var(--p3bd);color:var(--p3tx)}
+.arr{text-align:center;color:var(--color-text-secondary);font-size:13px;line-height:2}
+.dl{margin-top:12px;padding:10px 14px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);background:var(--color-background-secondary)}
+.dll{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-secondary);margin-bottom:7px}
+.dli{display:flex;gap:5px;flex-wrap:wrap}
+.di{font-size:12px;padding:4px 10px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);color:var(--color-text-secondary)}
+.ts{margin-top:12px}
+.tsl{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-secondary);margin-bottom:7px}
+.tg{display:flex;flex-wrap:wrap;gap:5px}
+.sb{font-size:12px;padding:4px 10px;border-radius:var(--border-radius-md);border:0.5px solid var(--color-border-tertiary);color:var(--color-text-secondary)}
+.sb.n2{border-color:var(--color-border-info);color:var(--color-text-info)}
+.sb.n3{border-color:var(--p3bd);color:var(--p3tx)}
+.leg{display:flex;gap:14px;margin-top:12px;flex-wrap:wrap}
+.li{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--color-text-secondary)}
+.ld{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+</style>
+
+<div class="tb">
+  <button class="t p1 on" id="tb1" onclick="go(1)"><span style="font-weight:500">Phase 1</span><br>Foundation MVP</button>
+  <button class="t p2" id="tb2" onclick="go(2)"><span style="font-weight:500">Phase 2</span><br>Analytics & intelligence</button>
+  <button class="t p3" id="tb3" onclick="go(3)"><span style="font-weight:500">Phase 3</span><br>GenAI platform</button>
+</div>
+
+<div class="ph" id="ph"></div>
+<div id="arch"></div>
+<div class="dl"><div class="dll">Key deliverables</div><div class="dli" id="del"></div></div>
+<div class="ts"><div class="tsl">Tech stack</div><div class="tg" id="stk"></div></div>
+<div class="leg" id="leg"></div>
+
+<script>
+const P = {
+  1:{
+    tag:"Weeks 1–8",
+    name:"Phase 1 — Foundation MVP",
+    goal:"Build the full data pipeline, all three ESG analytics modules, and a Streamlit dashboard. Delivers a shippable product with centralized data ingestion, weighted ESG scoring, and Plotly-based KPI visualization.",
+    deliverables:["Streamlit ESG dashboard","Environmental, social & governance modules","ESG scoring engine — category + overall rating","PostgreSQL schema & FastAPI REST backend"],
+    layers:[
+      {nm:"Data sources",mods:["CSV upload","Excel upload","Manual entry"]},
+      {nm:"Ingestion & processing",mods:["File upload handler","Data validator","Schema mapper","Data transformer"]},
+      {nm:"ESG analytics",mods:["Environmental module","Social module","Governance module"]},
+      {nm:"Scoring",mods:["Weighted ESG scoring engine","Category scoring — E / S / G","Overall ESG rating"]},
+      {nm:"Output",mods:["Streamlit dashboard","Plotly charts","KPI summary cards"]},
+      {nm:"Infrastructure",mods:["FastAPI","PostgreSQL","Docker","Railway"]},
+    ],
+    stack:["Streamlit","FastAPI","Pandas","NumPy","Plotly","PostgreSQL","Docker","Railway"]
+  },
+  2:{
+    tag:"Weeks 9–18",
+    name:"Phase 2 — Analytics & intelligence",
+    goal:"Introduce predictive analytics, an AI recommendation engine, and automated PDF / DOCX report generation. Upgrade the frontend to React.js and add ChromaDB as the foundation for future vector search.",
+    deliverables:["React.js dashboard with Power BI integration","Predictive ESG models — Prophet, XGBoost, Random Forest","AI recommendation engine with actionable insights","Automated PDF & DOCX report exports"],
+    layers:[
+      {nm:"Data sources",mods:["CSV / Excel / Manual",{t:"REST API connectors",n:2},{t:"HR system sync",n:2},{t:"Energy platform feed",n:2}]},
+      {nm:"Ingestion & processing",mods:["File handler","Data validator","Schema mapper",{t:"Automated data pipelines",n:2}]},
+      {nm:"ESG analytics",mods:["Environmental module","Social module","Governance module",{t:"Predictive analytics (Prophet / XGBoost / RF)",n:2}]},
+      {nm:"AI & scoring",mods:["ESG scoring engine","Category scoring",{t:"AI recommendation engine",n:2},{t:"Auto report generator",n:2}]},
+      {nm:"Output",mods:["Streamlit",{t:"React.js dashboard",n:2},"Plotly charts",{t:"PDF & DOCX reports",n:2},{t:"Power BI integration",n:2}]},
+      {nm:"Infrastructure",mods:["FastAPI","PostgreSQL",{t:"ChromaDB",n:2},"Docker",{t:"Render",n:2}]},
+    ],
+    stack:[
+      "Streamlit",{t:"React.js",n:2},"FastAPI","Pandas / NumPy",
+      {t:"Scikit-Learn",n:2},{t:"XGBoost",n:2},{t:"Prophet",n:2},
+      "Plotly","PostgreSQL",{t:"ChromaDB",n:2},"Docker",{t:"Render",n:2}
+    ]
+  },
+  3:{
+    tag:"Weeks 19–30",
+    name:"Phase 3 — GenAI platform",
+    goal:"Deploy the ESG Copilot, RAG knowledge assistant, and multi-agent advisory system. Add IoT real-time monitoring, carbon credit optimization, and industry benchmarking for enterprise-grade sustainability intelligence.",
+    deliverables:["ESG Copilot — conversational analytics over your ESG data","RAG-powered knowledge assistant for ESG regulations & policy","Multi-agent advisory system (LangChain / CrewAI)","IoT real-time monitoring, carbon credit optimizer & benchmarking engine"],
+    layers:[
+      {nm:"Data sources",mods:["CSV / Excel / APIs",{t:"IoT sensor feeds",n:3},{t:"Real-time event streams",n:3},{t:"Regulatory documents",n:3}]},
+      {nm:"Ingestion & processing",mods:["File & API handlers","Automated pipelines",{t:"Real-time streaming pipeline",n:3},{t:"Document ingestion (RAG prep)",n:3}]},
+      {nm:"ESG analytics",mods:["E / S / G modules","Predictive analytics",{t:"Industry benchmarking engine",n:3},{t:"Carbon credit optimizer",n:3}]},
+      {nm:"GenAI & AI layer",mods:["ESG scoring + AI recs",{t:"ESG Copilot (LLM-powered)",n:3},{t:"RAG knowledge assistant",n:3},{t:"Multi-agent advisory",n:3}]},
+      {nm:"Output",mods:["React.js dashboard","Automated reports",{t:"Conversational AI interface",n:3},{t:"Carbon credit reports",n:3}]},
+      {nm:"Infrastructure",mods:["FastAPI","PostgreSQL",{t:"ChromaDB enhanced",n:3},"Docker",{t:"HuggingFace Spaces",n:3}]},
+    ],
+    stack:[
+      "React.js","FastAPI","Pandas / NumPy","Scikit-Learn / XGBoost / Prophet",
+      {t:"NVIDIA Llama 3.3 70B NIM",n:3},{t:"NVIDIA Nemotron",n:3},{t:"Gemini 2.5 Flash",n:3},
+      "PostgreSQL",{t:"ChromaDB enhanced",n:3},{t:"LangChain / CrewAI",n:3},
+      "Docker",{t:"HuggingFace Spaces",n:3}
+    ]
+  }
+};
+
+function mh(m){
+  const cls=typeof m==='string'?'m':m.n?`m n${m.n}`:'m';
+  const txt=typeof m==='string'?m:m.t;
+  return `<div class="${cls}">${txt}</div>`;
+}
+function sh(s){
+  const cls=typeof s==='string'?'sb':`sb n${s.n}`;
+  const txt=typeof s==='string'?s:s.t;
+  return `<div class="${cls}">${txt}</div>`;
+}
+
+function go(n){
+  [1,2,3].forEach(i=>document.getElementById('tb'+i).classList.toggle('on',i===n));
+  const d=P[n];
+  document.getElementById('ph').innerHTML=`
+    <div><div class="ptg">${d.tag}</div><div class="pnm">${d.name}</div></div>
+    <div class="pg">${d.goal}</div>
+  `;
+  let a='';
+  d.layers.forEach((l,i)=>{
+    a+=`<div class="lr"><div class="ln">${l.nm}</div><div class="lm">${l.mods.map(mh).join('')}</div></div>`;
+    if(i<d.layers.length-1) a+=`<div class="arr">↓</div>`;
+  });
+  document.getElementById('arch').innerHTML=a;
+  document.getElementById('del').innerHTML=d.deliverables.map(x=>`<div class="di">${x}</div>`).join('');
+  document.getElementById('stk').innerHTML=d.stack.map(sh).join('');
+  let leg='';
+  if(n===1) leg=`<div class="li"><div class="ld" style="background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary)"></div>Phase 1 baseline</div>`;
+  if(n===2) leg=`<div class="li"><div class="ld" style="background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary)"></div>Carried over from phase 1</div><div class="li"><div class="ld" style="background:var(--color-background-info)"></div>New in phase 2</div>`;
+  if(n===3) leg=`<div class="li"><div class="ld" style="background:var(--color-background-secondary);border:0.5px solid var(--color-border-secondary)"></div>Carried over</div><div class="li"><div class="ld" style="background:var(--p3bg);border:0.5px solid var(--p3bd)"></div>New in phase 3</div>`;
+  document.getElementById('leg').innerHTML=leg;
+}
+go(1);
+</script>
