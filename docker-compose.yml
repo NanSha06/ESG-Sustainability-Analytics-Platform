@@ -1,0 +1,75 @@
+services:
+
+  # ── PostgreSQL database ──────────────────────────────────────
+  db:
+    image: postgres:15-alpine
+    container_name: esg_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: esg_user
+      POSTGRES_PASSWORD: esg_password
+      POSTGRES_DB: esg_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - esg_postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U esg_user -d esg_db" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ── pgAdmin — browser-based DB viewer ───────────────────────
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: esg_pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@esg.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - esg_pgadmin_data:/var/lib/pgadmin
+
+  # ── FastAPI backend ──────────────────────────────────────────
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: esg_api
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app # live reload in dev
+      - ./data/uploads:/app/data/uploads
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+
+  # ── Streamlit dashboard ──────────────────────────────────────
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: esg_dashboard
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api
+    volumes:
+      - .:/app
+    command: streamlit run dashboard/main.py --server.port 8501 --server.address 0.0.0.0
+
+volumes:
+  esg_postgres_data:
+  esg_pgadmin_data:
