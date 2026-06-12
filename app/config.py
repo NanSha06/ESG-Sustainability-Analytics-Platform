@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     API_V1_PREFIX: str = "/api/v1"
 
     # ── Database ──────────────────────────────────────────────
-    DATABASE_URL: str = "postgresql://postgres:aabb@localhost:5432/esg_db"
+    DATABASE_URL: str  # required — must be set in .env
 
     # ── CORS ──────────────────────────────────────────────────
     # Streamlit dashboard origin; extend in production

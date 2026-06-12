@@ -1,2 +1,28 @@
+
+# environment & credentials
 .env
-venv
+.env.*
+
+
+# python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# uploads & data
+data/uploads/
+
+# testing
+.pytest_cache/
+htmlcov/
+.coverage
+
+# IDE
+.vscode/
+.idea/
